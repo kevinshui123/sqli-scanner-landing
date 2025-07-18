@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initThemeDetection();
     initLanguage();
     initContactFeatures();
+    initDemoVideo();
     
     // 初始化AOS动画库
     if (typeof AOS !== 'undefined') {
@@ -657,6 +658,22 @@ const translations = {
         dedicatedManager: '专属客户经理',
         instantContact: '立即联系 Telegram',
         
+        // 视频演示部分
+        demoTitle: '产品演示',
+        demoDesc: '观看松子壳安全工具的完整功能演示，了解如何快速检测SQL注入漏洞',
+        viewDemo: '查看演示',
+        fullDemo: '完整演示',
+        minutes: '分钟',
+        hdQuality: '高清画质',
+        smartScanDemo: '智能扫描演示',
+        smartScanDemoDesc: '观看如何使用AI算法快速识别SQL注入漏洞',
+        dataExtractionDemo: '数据提取展示',
+        dataExtractionDemoDesc: '实时演示数据库结构和敏感信息提取过程',
+        wafBypassDemo: 'WAF绕过技术',
+        wafBypassDemoDesc: '展示如何绕过各种Web应用防火墙',
+        reportGenerationDemo: '报告生成',
+        reportGenerationDemoDesc: '完整的漏洞报告生成和导出功能演示',
+        
         // 核心功能
         coreFeaturesTitle: '核心功能',
         coreFeaturesDesc: '集成多种先进技术，提供全面的SQL注入检测解决方案',
@@ -840,6 +857,22 @@ const translations = {
         onlineService: '24/7 Online Service',
         dedicatedManager: 'Dedicated Account Manager',
         instantContact: 'Contact Telegram Now',
+        
+        // 视频演示部分
+        demoTitle: 'Product Demo',
+        demoDesc: 'Watch the complete feature demonstration of PineKernel Security Tool and learn how to quickly detect SQL injection vulnerabilities',
+        viewDemo: 'View Demo',
+        fullDemo: 'Full Demo',
+        minutes: 'minutes',
+        hdQuality: 'HD Quality',
+        smartScanDemo: 'Smart Scanning Demo',
+        smartScanDemoDesc: 'Watch how to use AI algorithms to quickly identify SQL injection vulnerabilities',
+        dataExtractionDemo: 'Data Extraction Display',
+        dataExtractionDemoDesc: 'Real-time demonstration of database structure and sensitive information extraction',
+        wafBypassDemo: 'WAF Bypass Techniques',
+        wafBypassDemoDesc: 'Show how to bypass various web application firewalls',
+        reportGenerationDemo: 'Report Generation',
+        reportGenerationDemoDesc: 'Complete vulnerability report generation and export function demonstration',
         
         // 核心功能
         coreFeaturesTitle: 'Core Features',
@@ -1248,6 +1281,36 @@ function updateAllTextContent(trans) {
         '立即联系 Telegram': trans.instantContact,
         'Contact Telegram Now': trans.instantContact,
         
+        // 视频演示部分
+        '产品演示': trans.demoTitle,
+        'Product Demo': trans.demoTitle,
+        '观看松子壳安全工具的完整功能演示，了解如何快速检测SQL注入漏洞': trans.demoDesc,
+        'Watch the complete feature demonstration of PineKernel Security Tool and learn how to quickly detect SQL injection vulnerabilities': trans.demoDesc,
+        '查看演示': trans.viewDemo,
+        'View Demo': trans.viewDemo,
+        '完整演示': trans.fullDemo,
+        'Full Demo': trans.fullDemo,
+        '分钟': trans.minutes,
+        'minutes': trans.minutes,
+        '高清画质': trans.hdQuality,
+        'HD Quality': trans.hdQuality,
+        '智能扫描演示': trans.smartScanDemo,
+        'Smart Scanning Demo': trans.smartScanDemo,
+        '观看如何使用AI算法快速识别SQL注入漏洞': trans.smartScanDemoDesc,
+        'Watch how to use AI algorithms to quickly identify SQL injection vulnerabilities': trans.smartScanDemoDesc,
+        '数据提取展示': trans.dataExtractionDemo,
+        'Data Extraction Display': trans.dataExtractionDemo,
+        '实时演示数据库结构和敏感信息提取过程': trans.dataExtractionDemoDesc,
+        'Real-time demonstration of database structure and sensitive information extraction': trans.dataExtractionDemoDesc,
+        'WAF绕过技术': trans.wafBypassDemo,
+        'WAF Bypass Techniques': trans.wafBypassDemo,
+        '展示如何绕过各种Web应用防火墙': trans.wafBypassDemoDesc,
+        'Show how to bypass various web application firewalls': trans.wafBypassDemoDesc,
+        '报告生成': trans.reportGenerationDemo,
+        'Report Generation': trans.reportGenerationDemo,
+        '完整的漏洞报告生成和导出功能演示': trans.reportGenerationDemoDesc,
+        'Complete vulnerability report generation and export function demonstration': trans.reportGenerationDemoDesc,
+        
         // 英文功能列表
         'Unlimited URL Scanning': trans.unlimitedUrlScan,
         'Advanced SQL Injection Detection': trans.advancedSqlDetection,
@@ -1595,7 +1658,8 @@ window.SQLiScannerLanding = {
     updateFeatureLists,
     updatePurchaseInfo,
     updateAllTextContent,
-    initContactFeatures
+    initContactFeatures,
+    initDemoVideo
 };
 
 // 联系部分的特殊功能
@@ -1706,4 +1770,162 @@ function createContactParticles() {
         }
     `;
     document.head.appendChild(style);
+}
+
+// 视频演示功能
+function initDemoVideo() {
+    const demoBtn = document.getElementById('demo-btn');
+    const videoThumbnail = document.getElementById('video-thumbnail');
+    const videoContainer = document.getElementById('video-container');
+    const demoVideo = document.getElementById('demo-video');
+    const closeVideoBtn = document.getElementById('close-video');
+    const playButtonLarge = document.querySelector('.play-button-large');
+    
+    // 点击查看演示按钮滚动到视频部分
+    if (demoBtn) {
+        demoBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const demoSection = document.getElementById('demo');
+            if (demoSection) {
+                demoSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+                
+                // 添加点击动画
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            }
+        });
+    }
+    
+    // 播放视频功能
+    function playVideo() {
+        if (videoThumbnail && videoContainer && demoVideo) {
+            // 隐藏缩略图，显示视频
+            videoThumbnail.style.display = 'none';
+            videoContainer.style.display = 'block';
+            
+            // 为了确保YouTube视频能够自动播放，重新设置src
+            const baseUrl = 'https://www.youtube.com/embed/Cp-sPvVNnnE';
+            const params = '?enablejsapi=1&autoplay=1&rel=0&modestbranding=1&start=0';
+            demoVideo.src = baseUrl + params;
+            
+            // 添加播放统计
+            console.log('YouTube视频开始播放');
+            
+            // 添加视频播放动画
+            videoContainer.style.opacity = '0';
+            videoContainer.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                videoContainer.style.transition = 'all 0.4s ease';
+                videoContainer.style.opacity = '1';
+                videoContainer.style.transform = 'scale(1)';
+            }, 50);
+        }
+    }
+    
+    // 关闭视频功能
+    function closeVideo() {
+        if (videoThumbnail && videoContainer && demoVideo) {
+            // 添加关闭动画
+            videoContainer.style.transition = 'all 0.3s ease';
+            videoContainer.style.opacity = '0';
+            videoContainer.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                // 停止YouTube视频播放 - 清空src
+                demoVideo.src = '';
+                
+                // 显示缩略图，隐藏视频
+                videoContainer.style.display = 'none';
+                videoThumbnail.style.display = 'block';
+                
+                // 重置样式
+                videoContainer.style.transition = '';
+                videoContainer.style.opacity = '';
+                videoContainer.style.transform = '';
+                
+                console.log('YouTube视频已关闭');
+            }, 300);
+        }
+    }
+    
+    // 显示视频错误提示
+    function showVideoError() {
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = `
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(220, 38, 38, 0.9);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            z-index: 10;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+        `;
+        errorMsg.textContent = 'YouTube视频加载失败，请检查网络连接';
+        
+        videoContainer.appendChild(errorMsg);
+        
+        // 3秒后自动移除错误提示并返回缩略图
+        setTimeout(() => {
+            errorMsg.remove();
+            closeVideo();
+        }, 3000);
+    }
+    
+    // 绑定事件监听器
+    if (videoThumbnail) {
+        videoThumbnail.addEventListener('click', playVideo);
+    }
+    
+    if (playButtonLarge) {
+        playButtonLarge.addEventListener('click', function(e) {
+            e.stopPropagation();
+            playVideo();
+        });
+    }
+    
+    if (closeVideoBtn) {
+        closeVideoBtn.addEventListener('click', closeVideo);
+    }
+    
+    // YouTube iframe相关事件处理
+    if (demoVideo) {
+        // iframe加载完成
+        demoVideo.addEventListener('load', function() {
+            console.log('YouTube视频加载完成');
+        });
+        
+        // iframe加载错误
+        demoVideo.addEventListener('error', function(e) {
+            console.error('YouTube视频加载错误:', e);
+            showVideoError();
+        });
+        
+        // 注意：YouTube iframe不能直接监听播放结束事件
+        // 如果需要监听播放事件，需要使用YouTube Player API
+    }
+    
+    // ESC键关闭视频
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && videoContainer && videoContainer.style.display === 'block') {
+            closeVideo();
+        }
+    });
+    
+    // 点击视频外部区域关闭视频（可选）
+    if (videoContainer) {
+        videoContainer.addEventListener('click', function(e) {
+            if (e.target === videoContainer) {
+                closeVideo();
+            }
+        });
+    }
 } 
