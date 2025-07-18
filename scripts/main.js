@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initMagneticEffect();
     initThemeDetection();
     initLanguage();
+    initContactFeatures();
     
     // 初始化AOS动画库
     if (typeof AOS !== 'undefined') {
@@ -643,6 +644,19 @@ const translations = {
         freeTrial: '7天免费试用',
         customPlan: '定制化方案',
         
+        // 联系部分
+        contactTitle: '联系我们',
+        contactDesc: '有任何问题或需要技术支持？随时联系我们的专业团队',
+        telegram: 'Telegram',
+        telegramDesc: '即时消息，快速响应',
+        techSupport: '技术支持',
+        techSupportDesc: '专业技术团队在线支持',
+        businessCoop: '企业合作',
+        businessCoopDesc: '定制化解决方案',
+        onlineService: '24/7 在线服务',
+        dedicatedManager: '专属客户经理',
+        instantContact: '立即联系 Telegram',
+        
         // 核心功能
         coreFeaturesTitle: '核心功能',
         coreFeaturesDesc: '集成多种先进技术，提供全面的SQL注入检测解决方案',
@@ -813,6 +827,19 @@ const translations = {
         contactSales: 'Contact Sales',
         freeTrial: '7-day free trial',
         customPlan: 'Custom Solution',
+        
+        // 联系部分
+        contactTitle: 'Contact Us',
+        contactDesc: 'Have any questions or need technical support? Contact our professional team anytime',
+        telegram: 'Telegram',
+        telegramDesc: 'Instant messaging, quick response',
+        techSupport: 'Technical Support',
+        techSupportDesc: 'Professional technical team online support',
+        businessCoop: 'Business Cooperation',
+        businessCoopDesc: 'Customized solutions',
+        onlineService: '24/7 Online Service',
+        dedicatedManager: 'Dedicated Account Manager',
+        instantContact: 'Contact Telegram Now',
         
         // 核心功能
         coreFeaturesTitle: 'Core Features',
@@ -1198,6 +1225,29 @@ function updateAllTextContent(trans) {
         '[!] SQL injection vulnerability found': trans.foundSqlInjection,
         '[+] Scan completed, generating report': trans.scanComplete,
         
+        // 联系部分
+        '联系我们': trans.contactTitle,
+        'Contact Us': trans.contactTitle,
+        '有任何问题或需要技术支持？随时联系我们的专业团队': trans.contactDesc,
+        'Have any questions or need technical support? Contact our professional team anytime': trans.contactDesc,
+        'Telegram': trans.telegram,
+        '即时消息，快速响应': trans.telegramDesc,
+        'Instant messaging, quick response': trans.telegramDesc,
+        '技术支持': trans.techSupport,
+        'Technical Support': trans.techSupport,
+        '专业技术团队在线支持': trans.techSupportDesc,
+        'Professional technical team online support': trans.techSupportDesc,
+        '企业合作': trans.businessCoop,
+        'Business Cooperation': trans.businessCoop,
+        '定制化解决方案': trans.businessCoopDesc,
+        'Customized solutions': trans.businessCoopDesc,
+        '24/7 在线服务': trans.onlineService,
+        '24/7 Online Service': trans.onlineService,
+        '专属客户经理': trans.dedicatedManager,
+        'Dedicated Account Manager': trans.dedicatedManager,
+        '立即联系 Telegram': trans.instantContact,
+        'Contact Telegram Now': trans.instantContact,
+        
         // 英文功能列表
         'Unlimited URL Scanning': trans.unlimitedUrlScan,
         'Advanced SQL Injection Detection': trans.advancedSqlDetection,
@@ -1544,5 +1594,116 @@ window.SQLiScannerLanding = {
     updateSensitiveDataSection,
     updateFeatureLists,
     updatePurchaseInfo,
-    updateAllTextContent
-}; 
+    updateAllTextContent,
+    initContactFeatures
+};
+
+// 联系部分的特殊功能
+function initContactFeatures() {
+    // Telegram按钮点击跟踪
+    const telegramButtons = document.querySelectorAll('a[href*="t.me"]');
+    
+    telegramButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // 添加点击动画效果
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            
+            // 可选：添加统计追踪
+            console.log('Telegram联系点击');
+        });
+    });
+    
+    // 联系卡片悬浮效果增强
+    const contactCards = document.querySelectorAll('.contact-card');
+    
+    contactCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            // 添加轻微的3D倾斜效果
+            this.style.transform = 'translateY(-5px) rotateX(5deg) rotateY(5deg)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = '';
+        });
+        
+        // 鼠标移动时的动态效果
+        card.addEventListener('mousemove', function(e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            this.style.transform = `translateY(-5px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+    });
+    
+    // 创建动态背景粒子
+    createContactParticles();
+}
+
+// 为联系部分创建动态粒子背景
+function createContactParticles() {
+    const contactSection = document.getElementById('contact');
+    if (!contactSection) return;
+    
+    const particleContainer = document.createElement('div');
+    particleContainer.className = 'contact-particles';
+    particleContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        overflow: hidden;
+    `;
+    
+    // 创建多个粒子
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 4 + 2}px;
+            height: ${Math.random() * 4 + 2}px;
+            background: rgba(59, 130, 246, ${Math.random() * 0.5 + 0.2});
+            border-radius: 50%;
+            top: ${Math.random() * 100}%;
+            left: ${Math.random() * 100}%;
+            animation: floatParticle ${Math.random() * 10 + 10}s linear infinite;
+        `;
+        particleContainer.appendChild(particle);
+    }
+    
+    contactSection.style.position = 'relative';
+    contactSection.appendChild(particleContainer);
+    
+    // 添加粒子动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+} 
