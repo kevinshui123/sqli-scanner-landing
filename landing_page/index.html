@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>松子壳安全工具 - 专业SQL注入漏洞检测平台</title>
+    <meta name="description" content="松子壳安全工具 - 专业级SQL注入漏洞检测与数据提取平台，采用Web3设计，提供智能扫描、实时监控和敏感信息检测功能">
+    
+    <!-- 字体引入 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 图标库 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS文件 -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+    <!-- 背景粒子系统 -->
+    <div id="particles-js"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-logo">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span class="brand-text">松子壳安全工具</span>
+            </div>
+            
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link" data-section="home">首页</a>
+                <a href="#features" class="nav-link" data-section="features">功能</a>
+                <a href="#screenshots" class="nav-link" data-section="screenshots">界面</a>
+                <a href="#pricing" class="nav-link" data-section="pricing">购买</a>
+                <a href="#contact" class="nav-link" data-section="contact">联系</a>
+            </div>
+            
+            <!-- 语言切换按钮 -->
+            <div class="language-toggle" id="language-toggle">
+                <button class="lang-btn" onclick="toggleLanguage()">
+                    <span class="flag-icon">🇨🇳</span>
+                    <span class="lang-text">中文</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <div class="lang-option active" data-lang="zh">
+                        <span class="flag-icon">🇨🇳</span>
+                        <span>中文</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span class="flag-icon">🇺🇸</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main>
+        <!-- 英雄区域 -->
+        <section id="home" class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        <span class="title-gradient">松子壳安全工具</span>
+                        <br>
+                        <span class="title-secondary">专业SQL注入检测平台</span>
+                    </h1>
+                    
+                    <p class="hero-description">
+                        采用先进算法的专业SQL注入漏洞检测工具，提供实时扫描、智能分析和数据提取功能。
+                        为网络安全专业人员打造的下一代安全测试平台。
+                    </p>
+                    
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="367">0</div>
+                            <div class="stat-label">扫描记录</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="7">0</div>
+                            <div class="stat-label">漏洞发现</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" data-count="360">0</div>
+                            <div class="stat-label">安全站点</div>
+                        </div>
+                    </div>
+                    
+                    <div class="hero-actions">
+                        <a href="#pricing" class="btn btn-primary btn-glow">
+                            <i class="fas fa-shopping-cart"></i>
+                            立即购买
+                        </a>
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-play"></i>
+                            查看演示
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-visual">
+                                    <div class="terminal-window scan-line-enhanced matrix-rain">
+                    <div class="terminal-header">
+                        <div class="terminal-buttons">
+                            <span class="btn-close"></span>
+                            <span class="btn-minimize"></span>
+                            <span class="btn-maximize"></span>
+                        </div>
+                        <div class="terminal-title quantum-glitch">松子壳安全工具 v2.0</div>
+                    </div>
+                    <div class="terminal-body">
+                            <div class="terminal-line">
+                                <span class="prompt">$</span>
+                                <span class="command typing-text">python songzi_security.py --url https://example.com</span>
+                            </div>
+                            <div class="terminal-line delay-1">
+                                <span class="output success">[+] 启动松子壳安全扫描引擎...</span>
+                            </div>
+                            <div class="terminal-line delay-2">
+                                <span class="output info">[*] 检测到潜在注入点: id参数</span>
+                            </div>
+                            <div class="terminal-line delay-3">
+                                <span class="output warning">[!] 发现SQL注入漏洞</span>
+                            </div>
+                            <div class="terminal-line delay-4">
+                                <span class="output success">[+] 扫描完成，生成报告</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 浮动元素 -->
+            <div class="floating-elements">
+                <div class="floating-icon neon-glow levitate" data-delay="0">
+                    <i class="fas fa-database"></i>
+                </div>
+                <div class="floating-icon cyber-pulse levitate" data-delay="1">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="floating-icon quantum-glitch levitate" data-delay="2">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <div class="floating-icon energy-burst levitate" data-delay="3">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能特色区域 -->
+        <section id="features" class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-gradient">核心功能</span>
+                    </h2>
+                    <p class="section-description">
+                        集成多种先进技术，提供全面的SQL注入检测解决方案
+                    </p>
+                </div>
+                
+                            <div class="features-grid">
+                <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon pulse-ring">
+                        <i class="fas fa-search"></i>
+                    </div>
+                        <h3 class="feature-title">智能扫描</h3>
+                        <p class="feature-description">
+                            采用机器学习算法，智能识别SQL注入漏洞点，减少误报率
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">AI算法</span>
+                            <span class="tech-tag">模式识别</span>
+                        </div>
+                    </div>
+                    
+                                    <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon cyber-pulse">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                        <h3 class="feature-title">实时监控</h3>
+                        <p class="feature-description">
+                            实时监控扫描进度，提供详细的状态信息和性能指标
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">实时数据</span>
+                            <span class="tech-tag">性能监控</span>
+                        </div>
+                    </div>
+                    
+                                    <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon energy-burst">
+                        <i class="fas fa-download"></i>
+                    </div>
+                        <h3 class="feature-title">数据提取</h3>
+                        <p class="feature-description">
+                            自动提取数据库结构和敏感信息，支持多种数据库类型
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">自动化</span>
+                            <span class="tech-tag">多数据库</span>
+                        </div>
+                    </div>
+                    
+                                    <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon holographic-shift">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                        <h3 class="feature-title">可视化报告</h3>
+                        <p class="feature-description">
+                            生成详细的可视化安全报告，支持多种导出格式
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">数据可视化</span>
+                            <span class="tech-tag">报告导出</span>
+                        </div>
+                    </div>
+                    
+                                    <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature-icon neon-glow">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                        <h3 class="feature-title">批量处理</h3>
+                        <p class="feature-description">
+                            支持批量URL扫描和任务管理，提高安全测试效率
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">批量扫描</span>
+                            <span class="tech-tag">任务队列</span>
+                        </div>
+                    </div>
+                    
+                                    <div class="feature-card gradient-border card-3d levitate" data-aos="fade-up" data-aos-delay="600">
+                    <div class="feature-icon quantum-glitch">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                        <h3 class="feature-title">WAF绕过</h3>
+                        <p class="feature-description">
+                            集成多种WAF绕过技术，提高检测成功率和准确性
+                        </p>
+                        <div class="feature-tech">
+                            <span class="tech-tag">绕过技术</span>
+                            <span class="tech-tag">高成功率</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工具截图展示区域 -->
+        <section id="screenshots" class="screenshots-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-gradient">工具界面</span>
+                    </h2>
+                    <p class="section-description">
+                        直观的用户界面，专业的功能布局
+                    </p>
+                </div>
+                
+                <div class="screenshots-container">
+                    <!-- 主仪表板截图 -->
+                    <div class="screenshot-item main-dashboard" data-aos="fade-up">
+                        <div class="screenshot-wrapper">
+                                                    <div class="screenshot-header">
+                            <div class="window-controls">
+                                <span class="control-btn close"></span>
+                                <span class="control-btn minimize"></span>
+                                <span class="control-btn maximize"></span>
+                            </div>
+                            <div class="window-title">松子壳安全工具 - 主仪表板</div>
+                        </div>
+                            <div class="screenshot-content">
+                                <div class="dashboard-mockup">
+                                    <div class="stats-row">
+                                        <div class="stat-card">
+                                            <div class="stat-icon blue">
+                                                <i class="fas fa-search"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <div class="stat-number">367</div>
+                                                <div class="stat-label">总扫描数</div>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon red">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <div class="stat-number">7</div>
+                                                <div class="stat-label">漏洞发现</div>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon green">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <div class="stat-number">360</div>
+                                                <div class="stat-label">安全站点</div>
+                                            </div>
+                                        </div>
+                                        <div class="stat-card">
+                                            <div class="stat-icon orange">
+                                                <i class="fas fa-clock"></i>
+                                            </div>
+                                            <div class="stat-info">
+                                                <div class="stat-number">0</div>
+                                                <div class="stat-label">进行中</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="action-buttons">
+                                        <button class="action-btn primary">
+                                            <i class="fas fa-plus"></i>
+                                            新建扫描
+                                        </button>
+                                        <button class="action-btn secondary">
+                                            <i class="fas fa-history"></i>
+                                            扫描历史
+                                        </button>
+                                        <button class="action-btn secondary">
+                                            <i class="fas fa-cog"></i>
+                                            设置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 扫描历史截图 -->
+                    <div class="screenshot-item scan-history" data-aos="fade-up" data-aos-delay="200">
+                        <div class="screenshot-wrapper">
+                            <div class="screenshot-header">
+                                <div class="window-controls">
+                                    <span class="control-btn close"></span>
+                                    <span class="control-btn minimize"></span>
+                                    <span class="control-btn maximize"></span>
+                                </div>
+                                <div class="window-title">扫描历史</div>
+                            </div>
+                            <div class="screenshot-content">
+                                <div class="history-mockup">
+                                    <div class="history-header">
+                                        <div class="search-bar">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" placeholder="搜索扫描记录...">
+                                        </div>
+                                        <div class="filter-buttons">
+                                            <button class="filter-btn active">全部</button>
+                                            <button class="filter-btn">漏洞</button>
+                                            <button class="filter-btn">安全</button>
+                                            <button class="filter-btn">进行中</button>
+                                        </div>
+                                    </div>
+                                    <div class="history-list">
+                                        <div class="history-item">
+                                            <div class="item-status completed"></div>
+                                            <div class="item-info">
+                                                <div class="item-url">http://www.sung*****.co.kr/html/k*****.php?board=notice&act=view&no=**</div>
+                                                <div class="item-meta">7/17/2025, 6:36:41 AM • 扫描了 1 个URL</div>
+                                            </div>
+                                            <div class="item-status-badge completed">已完成</div>
+                                        </div>
+                                        <div class="history-item">
+                                            <div class="item-status completed"></div>
+                                            <div class="item-info">
+                                                <div class="item-url">https://www.lucky*****.com.sg/index.php?route=product/product&product_id=****</div>
+                                                <div class="item-meta">7/17/2025, 6:36:40 AM • 扫描了 1 个URL</div>
+                                            </div>
+                                            <div class="item-status-badge completed">已完成</div>
+                                        </div>
+                                        <div class="history-item">
+                                            <div class="item-status completed"></div>
+                                            <div class="item-info">
+                                                <div class="item-url">https://health*****.com/shop/index.php?l=product_detail&p=***</div>
+                                                <div class="item-meta">7/17/2025, 6:36:39 AM • 扫描了 1 个URL</div>
+                                            </div>
+                                            <div class="item-status-badge completed">已完成</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 数据提取截图 -->
+                    <div class="screenshot-item data-extraction" data-aos="fade-up" data-aos-delay="400">
+                        <div class="screenshot-wrapper">
+                            <div class="screenshot-header">
+                                <div class="window-controls">
+                                    <span class="control-btn close"></span>
+                                    <span class="control-btn minimize"></span>
+                                    <span class="control-btn maximize"></span>
+                                </div>
+                                <div class="window-title">数据提取</div>
+                            </div>
+                            <div class="screenshot-content">
+                                <div class="extraction-mockup">
+                                    <div class="extraction-sidebar">
+                                        <div class="url-info">
+                                            <div class="url-title">www.ster*****.com</div>
+                                            <div class="url-status unknown">Unknown</div>
+                                        </div>
+                                        <div class="database-list">
+                                            <div class="db-item">
+                                                <i class="fas fa-database"></i>
+                                                <span>sterling_grille</span>
+                                            </div>
+                                            <div class="table-list">
+                                                <div class="table-item">
+                                                    <i class="fas fa-table"></i>
+                                                    <span>Caffeine_SitePages</span>
+                                                </div>
+                                                <div class="table-item">
+                                                    <i class="fas fa-table"></i>
+                                                    <span>Caffeine_AdminDefaults</span>
+                                                </div>
+                                                <div class="table-item">
+                                                    <i class="fas fa-table"></i>
+                                                    <span>Caffeine_AdminCategories</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="extraction-content">
+                                        <div class="table-header">
+                                            <h3>Caffeine_AdminCategories</h3>
+                                            <span class="record-count">共 15 条记录</span>
+                                        </div>
+                                        <div class="data-table">
+                                            <div class="table-row header">
+                                                <div class="table-cell">ID</div>
+                                                <div class="table-cell">Name</div>
+                                                <div class="table-cell">Parent</div>
+                                                <div class="table-cell">Sort</div>
+                                                <div class="table-cell">Created</div>
+                                                <div class="table-cell">Active</div>
+                                            </div>
+                                            <div class="table-row">
+                                                <div class="table-cell">1000</div>
+                                                <div class="table-cell">1</div>
+                                                <div class="table-cell">NULL</div>
+                                                <div class="table-cell">0</div>
+                                                <div class="table-cell">2008-01-29</div>
+                                                <div class="table-cell">0</div>
+                                            </div>
+                                            <div class="table-row">
+                                                <div class="table-cell">1001</div>
+                                                <div class="table-cell">2</div>
+                                                <div class="table-cell">NULL</div>
+                                                <div class="table-cell">0</div>
+                                                <div class="table-cell">2008-01-29</div>
+                                                <div class="table-cell">0</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 敏感信息匹配展示 -->
+                    <div class="screenshot-item sensitive-data" data-aos="fade-up" data-aos-delay="600">
+                        <div class="screenshot-wrapper">
+                            <div class="screenshot-header">
+                                <div class="window-controls">
+                                    <span class="control-btn close"></span>
+                                    <span class="control-btn minimize"></span>
+                                    <span class="control-btn maximize"></span>
+                                </div>
+                                <div class="window-title">敏感信息检测</div>
+                            </div>
+                            <div class="screenshot-content">
+                                <div class="sensitive-mockup">
+                                    <div class="sensitive-header">
+                                        <h3>检测到敏感信息</h3>
+                                        <span class="detection-count">发现 2,847 条敏感数据</span>
+                                    </div>
+                                                                    <div class="sensitive-categories">
+                                    <div class="category-card gradient-border data-flow">
+                                        <div class="category-icon energy-burst">
+                                            <i class="fas fa-credit-card"></i>
+                                        </div>
+                                            <div class="category-info">
+                                                <div class="category-title">银行卡号</div>
+                                                <div class="category-count">1,247 条记录</div>
+                                            </div>
+                                            <div class="category-samples">
+                                                <div class="sample-item">4***-****-****-1234</div>
+                                                <div class="sample-item">5***-****-****-5678</div>
+                                                <div class="sample-item">6***-****-****-9012</div>
+                                            </div>
+                                        </div>
+                                        
+                                                                            <div class="category-card gradient-border data-flow">
+                                        <div class="category-icon cyber-pulse">
+                                            <i class="fas fa-envelope"></i>
+                                        </div>
+                                            <div class="category-info">
+                                                <div class="category-title">邮箱地址</div>
+                                                <div class="category-count">1,356 条记录</div>
+                                            </div>
+                                            <div class="category-samples">
+                                                <div class="sample-item">user***@gmail.com</div>
+                                                <div class="sample-item">admin***@company.com</div>
+                                                <div class="sample-item">test***@outlook.com</div>
+                                            </div>
+                                        </div>
+                                        
+                                                                            <div class="category-card gradient-border data-flow">
+                                        <div class="category-icon neon-glow">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                            <div class="category-info">
+                                                <div class="category-title">电话号码</div>
+                                                <div class="category-count">244 条记录</div>
+                                            </div>
+                                            <div class="category-samples">
+                                                <div class="sample-item">138****8888</div>
+                                                <div class="sample-item">186****6666</div>
+                                                <div class="sample-item">+86-139****9999</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="sensitive-details">
+                                        <div class="detail-header">
+                                            <h4>详细信息</h4>
+                                            <button class="export-btn">
+                                                <i class="fas fa-download"></i>
+                                                导出报告
+                                            </button>
+                                        </div>
+                                        <div class="detail-table">
+                                            <div class="table-row header">
+                                                <div class="table-cell">类型</div>
+                                                <div class="table-cell">发现位置</div>
+                                                <div class="table-cell">风险等级</div>
+                                                <div class="table-cell">状态</div>
+                                            </div>
+                                            <div class="table-row">
+                                                <div class="table-cell">
+                                                    <span class="type-badge card">银行卡号</span>
+                                                </div>
+                                                <div class="table-cell">user_payment表</div>
+                                                <div class="table-cell">
+                                                    <span class="risk-badge high">高风险</span>
+                                                </div>
+                                                <div class="table-cell">
+                                                    <span class="status-badge detected">已检测</span>
+                                                </div>
+                                            </div>
+                                            <div class="table-row">
+                                                <div class="table-cell">
+                                                    <span class="type-badge email">邮箱地址</span>
+                                                </div>
+                                                <div class="table-cell">user_profile表</div>
+                                                <div class="table-cell">
+                                                    <span class="risk-badge medium">中风险</span>
+                                                </div>
+                                                <div class="table-cell">
+                                                    <span class="status-badge detected">已检测</span>
+                                                </div>
+                                            </div>
+                                            <div class="table-row">
+                                                <div class="table-cell">
+                                                    <span class="type-badge phone">电话号码</span>
+                                                </div>
+                                                <div class="table-cell">contact_info表</div>
+                                                <div class="table-cell">
+                                                    <span class="risk-badge medium">中风险</span>
+                                                </div>
+                                                <div class="table-cell">
+                                                    <span class="status-badge detected">已检测</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 购买区域 -->
+        <section id="pricing" class="pricing-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="title-gradient">选择您的方案</span>
+                    </h2>
+                    <p class="section-description">
+                        专业的安全测试工具，为您的业务保驾护航
+                    </p>
+                </div>
+                
+                <div class="pricing-container">
+                    <!-- 专业版 -->
+                    <div class="price-card featured" data-aos="fade-up" data-aos-delay="100">
+
+                        
+                        <div class="card-top">
+                            <h3 class="plan-title">专业版</h3>
+                            <div class="price-display">
+                                <span class="price-symbol">$</span>
+                                <span class="price-amount">30</span>
+                                <span class="price-period">/月</span>
+                            </div>
+                            <p class="plan-desc">适合专业安全测试人员和企业用户</p>
+                        </div>
+                        
+                        <div class="card-middle">
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check-circle"></i>无限制URL扫描</li>
+                                <li><i class="fas fa-check-circle"></i>高级SQL注入检测</li>
+                                <li><i class="fas fa-check-circle"></i>敏感信息自动检测</li>
+                                <li><i class="fas fa-check-circle"></i>批量扫描任务</li>
+                                <li><i class="fas fa-check-circle"></i>WAF绕过技术</li>
+                                <li><i class="fas fa-check-circle"></i>详细扫描报告</li>
+                                <li><i class="fas fa-check-circle"></i>数据导出功能</li>
+                                <li><i class="fas fa-check-circle"></i>24/7技术支持</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card-bottom">
+                            <button class="purchase-btn primary">
+                                <i class="fas fa-shopping-cart"></i>
+                                立即购买
+                            </button>
+                            <p class="extra-info">7天免费试用</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 企业版 -->
+                    <div class="price-card" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-top">
+                            <h3 class="plan-title">企业版</h3>
+                            <div class="price-display">
+                                <span class="price-symbol">$</span>
+                                <span class="price-amount">99</span>
+                                <span class="price-period">/月</span>
+                            </div>
+                            <p class="plan-desc">适合大型企业和安全团队</p>
+                        </div>
+                        
+                        <div class="card-middle">
+                            <ul class="feature-list">
+                                <li><i class="fas fa-check-circle"></i>专业版所有功能</li>
+                                <li><i class="fas fa-check-circle"></i>多用户协作管理</li>
+                                <li><i class="fas fa-check-circle"></i>API接口支持</li>
+                                <li><i class="fas fa-check-circle"></i>自定义扫描规则</li>
+                                <li><i class="fas fa-check-circle"></i>高级报告定制</li>
+                                <li><i class="fas fa-check-circle"></i>白标定制服务</li>
+                                <li><i class="fas fa-check-circle"></i>优先技术支持</li>
+                                <li><i class="fas fa-check-circle"></i>专属客户经理</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="card-bottom">
+                            <button class="purchase-btn secondary">
+                                <i class="fas fa-envelope"></i>
+                                联系销售
+                            </button>
+                            <p class="extra-info">定制化方案</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 购买说明 -->
+                <div class="purchase-info" data-aos="fade-up" data-aos-delay="300">
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>安全保障</h4>
+                                <p>使用行业标准加密，保护您的数据安全</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>定期更新</h4>
+                                <p>持续更新扫描引擎和漏洞库</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>专业支持</h4>
+                                <p>专业技术团队提供全天候支持</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-icon">
+                                <i class="fas fa-undo"></i>
+                            </div>
+                            <div class="info-content">
+                                <h4>退款保证</h4>
+                                <p>30天内不满意可申请全额退款</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- JavaScript库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- 自定义JavaScript -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/animations.js"></script>
+    <script src="scripts/particles-config.js"></script>
+</body>
+</html> 
