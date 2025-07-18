@@ -1277,4 +1277,145 @@
     opacity: 0.5;
     animation: neuroLink 4s infinite;
     transform: translateY(-50%);
+}
+
+/* ============================== */
+/* 联系部分动画 */
+/* ============================== */
+
+/* Telegram图标脉冲动画 */
+@keyframes telegramPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 32px rgba(34, 158, 217, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 12px 40px rgba(34, 158, 217, 0.5);
+    }
+}
+
+.telegram-icon {
+    animation: telegramPulse 3s ease-in-out infinite;
+}
+
+/* 悬浮光环动画 */
+@keyframes haloGlow {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(34, 158, 217, 0.3),
+            0 0 40px rgba(34, 158, 217, 0.2),
+            0 0 60px rgba(34, 158, 217, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(34, 158, 217, 0.5),
+            0 0 60px rgba(34, 158, 217, 0.3),
+            0 0 90px rgba(34, 158, 217, 0.2);
+    }
+}
+
+.telegram-btn:hover {
+    animation: haloGlow 2s ease-in-out infinite;
+}
+
+/* 联系卡片入场动画 */
+@keyframes contactSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) rotateX(15deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.contact-card {
+    animation: contactSlideIn 0.8s ease-out forwards;
+}
+
+.contact-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.contact-card:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.contact-card:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+/* 图标旋转动画 */
+@keyframes iconSpin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+.contact-card:hover .contact-icon i {
+    animation: iconSpin 0.8s ease-in-out;
+}
+
+/* 背景粒子效果 */
+@keyframes floatingParticles {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 1;
+    }
+    33% {
+        transform: translateY(-10px) rotate(120deg);
+        opacity: 0.8;
+    }
+    66% {
+        transform: translateY(5px) rotate(240deg);
+        opacity: 0.6;
+    }
+}
+
+.contact-section::after {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    width: 4px;
+    height: 4px;
+    background: rgba(59, 130, 246, 0.6);
+    border-radius: 50%;
+    animation: floatingParticles 8s ease-in-out infinite;
+}
+
+/* 打字机效果（为联系标题预留） */
+@keyframes typewriter {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes blinkCursor {
+    0%, 50% {
+        border-color: transparent;
+    }
+    51%, 100% {
+        border-color: var(--primary-color);
+    }
+}
+
+.typewriter-text {
+    overflow: hidden;
+    border-right: 2px solid var(--primary-color);
+    white-space: nowrap;
+    animation: 
+        typewriter 3s steps(20) 1s forwards,
+        blinkCursor 1s step-end infinite;
 } 
