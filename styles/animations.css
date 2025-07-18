@@ -1280,6 +1280,257 @@
 }
 
 /* ============================== */
+/* 视频演示部分动画 */
+/* ============================== */
+
+/* 视频播放器悬浮动画 */
+@keyframes videoPlayerFloat {
+    0%, 100% {
+        transform: translateY(0px);
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 25px 70px rgba(0, 0, 0, 0.6),
+            0 0 0 1px rgba(59, 130, 246, 0.2);
+    }
+}
+
+.video-player {
+    animation: videoPlayerFloat 4s ease-in-out infinite;
+}
+
+/* 播放按钮脉冲动画 */
+@keyframes playButtonPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 
+            0 8px 32px rgba(99, 102, 241, 0.4),
+            0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 
+            0 12px 40px rgba(99, 102, 241, 0.6),
+            0 0 0 20px rgba(99, 102, 241, 0);
+    }
+}
+
+.play-button-large {
+    animation: playButtonPulse 3s ease-in-out infinite;
+}
+
+/* 视频时长标签动画 */
+@keyframes durationBadgeSlide {
+    0% {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.video-duration {
+    animation: durationBadgeSlide 0.5s ease-out 1s both;
+}
+
+/* 视频容器淡入动画 */
+@keyframes videoFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.video-container {
+    animation: videoFadeIn 0.4s ease-out;
+}
+
+/* 演示亮点卡片动画 */
+@keyframes highlightCardSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) rotateX(15deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+
+.highlight-item {
+    animation: highlightCardSlide 0.6s ease-out forwards;
+}
+
+.highlight-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.highlight-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.highlight-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.highlight-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* 演示图标旋转动画 */
+@keyframes highlightIconSpin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+    }
+}
+
+.highlight-item:hover .highlight-icon {
+    animation: highlightIconSpin 0.8s ease-in-out;
+}
+
+/* 视频统计信息动画 */
+@keyframes statsItemSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.video-stats .stat-item {
+    animation: statsItemSlide 0.5s ease-out forwards;
+}
+
+.video-stats .stat-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.video-stats .stat-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.video-stats .stat-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+/* 浮动元素动画增强 */
+@keyframes demoFloatEnhanced {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg) scale(1);
+        opacity: 0.3;
+    }
+    33% {
+        transform: translateY(-15px) rotate(120deg) scale(1.1);
+        opacity: 0.6;
+    }
+    66% {
+        transform: translateY(10px) rotate(240deg) scale(0.9);
+        opacity: 0.4;
+    }
+}
+
+.demo-bg-decoration .floating-element {
+    animation: demoFloatEnhanced 12s ease-in-out infinite;
+}
+
+/* 视频封面图片缩放动画 */
+@keyframes thumbnailZoom {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+.video-thumbnail:hover img {
+    animation: thumbnailZoom 0.4s ease-out forwards;
+}
+
+/* 关闭按钮旋转动画 */
+@keyframes closeButtonRotate {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+    100% {
+        transform: rotate(90deg) scale(1.1);
+    }
+}
+
+.control-btn:hover {
+    animation: closeButtonRotate 0.3s ease-in-out;
+}
+
+/* 视频播放器边框发光动画 */
+@keyframes borderGlow {
+    0%, 100% {
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 0 20px rgba(99, 102, 241, 0);
+    }
+    50% {
+        box-shadow: 
+            0 30px 80px rgba(0, 0, 0, 0.6),
+            0 0 0 1px rgba(59, 130, 246, 0.3),
+            0 0 40px rgba(99, 102, 241, 0.4);
+    }
+}
+
+.video-player:hover {
+    animation: borderGlow 2s ease-in-out infinite;
+}
+
+/* 演示按钮点击波纹动画 */
+@keyframes rippleEffect {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+}
+
+.btn-secondary:active::after {
+    animation: rippleEffect 0.6s ease-out;
+}
+
+/* ============================== */
 /* 联系部分动画 */
 /* ============================== */
 
