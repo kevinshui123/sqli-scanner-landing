@@ -793,6 +793,14 @@ const translations = {
         // 价格单位
         monthPeriod: '/月',
         
+        // 支付相关
+        buyNowBtn: '立即购买',
+        cryptoSupport: '支持BTC、ETH、USDT等主流币种',
+        paymentCreating: '正在创建支付...',
+        paymentSuccess: '支付页面已打开',
+        paymentSuccessDesc: '请在新窗口中完成支付，支持BTC、ETH、USDT等多种加密货币',
+        paymentFailed: '支付创建失败',
+        
         // 技术标签
         aiAlgorithmTag: 'AI算法',
         patternRecognitionTag: '模式识别',
@@ -992,6 +1000,14 @@ const translations = {
         
         // 价格单位
         monthPeriod: '/month',
+        
+        // 支付相关
+        buyNowBtn: 'Buy Now',
+        cryptoSupport: 'Supports BTC, ETH, USDT and other major cryptocurrencies',
+        paymentCreating: 'Creating payment...',
+        paymentSuccess: 'Payment page opened',
+        paymentSuccessDesc: 'Please complete payment in the new window, supports BTC, ETH, USDT and other cryptocurrencies',
+        paymentFailed: 'Payment creation failed',
         
         // 技术标签
         aiAlgorithmTag: 'AI Algorithm',
@@ -1642,6 +1658,296 @@ function initLanguage() {
     }
 }
 
+// ========================= CRYPTOMUS 支付集成 =========================
+
+// Cryptomus 配置
+const CRYPTOMUS_CONFIG = {
+    merchantId: 'a954cdac-8665-4609-bf80-366079639fe0',
+    paymentApiKey: 'v99PyI8MbGrUSUCqMLhVhseKiUeOoM08rTzqt6a5aAJ3OCTlhBbQ5P3CQtznfDYa111C0qgt6scG7E3A8LJKnMA1oFYwqO0IAbw385Irbl5L6r5bR69XpEHhe6Cw4qtc',
+    baseUrl: 'https://api.cryptomus.com/v1',
+    paymentPageUrl: 'https://pay.cryptomus.com/pay'
+};
+
+// 产品配置
+const PRODUCTS = {
+    professional: {
+        name: '松子壳安全工具 - 专业版',
+        name_en: 'PineKernel Security Tool - Professional',
+        price: '30.00',
+        currency: 'USD',
+        description: '专业SQL注入检测工具月度订阅 - Professional SQL injection detection tool monthly subscription',
+        // 支持的主流加密货币
+        allowed_currencies: ['BTC', 'ETH', 'USDT', 'USDC', 'LTC', 'BCH', 'ADA', 'DOT', 'BNB', 'TRX']
+    },
+    enterprise: {
+        name: '松子壳安全工具 - 企业版', 
+        name_en: 'PineKernel Security Tool - Enterprise',
+        price: '99.00',
+        currency: 'USD',
+        description: '企业级SQL注入检测工具月度订阅 - Enterprise SQL injection detection tool monthly subscription',
+        // 支持的主流加密货币
+        allowed_currencies: ['BTC', 'ETH', 'USDT', 'USDC', 'LTC', 'BCH', 'ADA', 'DOT', 'BNB', 'TRX']
+    }
+};
+
+// 创建 Cryptomus 支付
+async function createCryptomusPayment(planType) {
+    try {
+        // 显示加载状态
+        showPaymentLoadingState(planType);
+        
+        const product = PRODUCTS[planType];
+        if (!product) {
+            throw new Error('无效的产品类型 / Invalid product type');
+        }
+        
+        // 生成唯一订单ID
+        const orderId = 'SQLI_' + planType.toUpperCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        
+        // 准备支付数据
+        const paymentData = {
+            amount: product.price,
+            currency: product.currency,
+            order_id: orderId,
+            name: currentLang === 'zh' ? product.name : product.name_en,
+            description: product.description,
+            url_return: 'https://t.me/Lolipa124',
+            url_callback: window.location.origin + '/webhook/cryptomus', // 如果您有后端处理webhook
+            lifetime: 7200, // 2小时有效期
+            // 允许的加密货币
+            currencies: product.allowed_currencies,
+            // 额外数据
+            additional_data: JSON.stringify({
+                plan: planType,
+                timestamp: Date.now(),
+                source: 'landing_page'
+            })
+        };
+        
+        console.log('创建支付订单:', {
+            plan: planType,
+            orderId: orderId,
+            amount: product.price,
+            currency: product.currency
+        });
+        
+        // 调用后端API创建支付（推荐方式）
+        // 注意：为了安全，不应该在前端直接调用Cryptomus API
+        const response = await createPaymentViaBackend(paymentData);
+        
+        if (response.success && response.payment_url) {
+            // 跳转到Cryptomus支付页面
+            window.open(response.payment_url, '_blank');
+            
+            // 跟踪支付事件
+            trackPaymentStart(planType, orderId);
+            
+            // 显示支付提示
+            showPaymentRedirectInfo();
+        } else {
+            throw new Error(response.message || '创建支付失败 / Payment creation failed');
+        }
+        
+    } catch (error) {
+        console.error('支付创建失败 / Payment creation failed:', error);
+        showPaymentError(error.message);
+    } finally {
+        hidePaymentLoadingState(planType);
+    }
+}
+
+// 通过后端创建支付（推荐方式）
+async function createPaymentViaBackend(paymentData) {
+    try {
+        // 如果您有后端API
+        const response = await fetch('/api/create-payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(paymentData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('后端API调用失败');
+        }
+        
+        return await response.json();
+        
+    } catch (error) {
+        console.log('后端API不可用，使用前端直接调用方式');
+        // 后备方案：前端直接创建支付链接
+        return createPaymentDirectly(paymentData);
+    }
+}
+
+// 直接创建支付链接（临时方案）
+function createPaymentDirectly(paymentData) {
+    try {
+        // 构建支付URL参数
+        const params = new URLSearchParams({
+            merchant_id: CRYPTOMUS_CONFIG.merchantId,
+            amount: paymentData.amount,
+            currency: paymentData.currency,
+            order_id: paymentData.order_id,
+            name: paymentData.name,
+            description: paymentData.description,
+            url_return: paymentData.url_return,
+            lifetime: paymentData.lifetime.toString()
+        });
+        
+        // 如果需要指定允许的货币
+        if (paymentData.currencies && paymentData.currencies.length > 0) {
+            params.append('currencies', paymentData.currencies.join(','));
+        }
+        
+        // 构建完整的支付URL
+        const paymentUrl = `${CRYPTOMUS_CONFIG.paymentPageUrl}?${params.toString()}`;
+        
+        console.log('生成支付链接:', paymentUrl);
+        
+        return {
+            success: true,
+            payment_url: paymentUrl,
+            order_id: paymentData.order_id
+        };
+        
+    } catch (error) {
+        console.error('创建支付链接失败:', error);
+        return {
+            success: false,
+            message: error.message
+        };
+    }
+}
+
+// UI 状态管理函数
+function showPaymentLoadingState(planType) {
+    const buttons = document.querySelectorAll('.purchase-btn');
+    buttons.forEach(btn => {
+        if (btn.onclick && btn.onclick.toString().includes(planType)) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在创建支付...';
+            btn.style.opacity = '0.7';
+        }
+    });
+}
+
+function hidePaymentLoadingState(planType) {
+    const buttons = document.querySelectorAll('.purchase-btn');
+    buttons.forEach(btn => {
+        if (btn.onclick && btn.onclick.toString().includes(planType)) {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-shopping-cart"></i> 立即购买';
+            btn.style.opacity = '';
+        }
+    });
+}
+
+function showPaymentError(message) {
+    // 创建错误提示
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'payment-notification error';
+    errorDiv.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="notification-text">
+                <strong>支付创建失败</strong>
+                <p>${message}</p>
+            </div>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(errorDiv);
+    
+    // 添加进入动画
+    setTimeout(() => {
+        errorDiv.classList.add('show');
+    }, 100);
+    
+    // 5秒后自动移除
+    setTimeout(() => {
+        if (errorDiv.parentElement) {
+            errorDiv.classList.remove('show');
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 300);
+        }
+    }, 5000);
+}
+
+function showPaymentRedirectInfo() {
+    // 创建成功提示
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'payment-notification success';
+    infoDiv.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <div class="notification-text">
+                <strong>支付页面已打开</strong>
+                <p>请在新窗口中完成支付，支持BTC、ETH、USDT等多种加密货币</p>
+            </div>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(infoDiv);
+    
+    // 添加进入动画
+    setTimeout(() => {
+        infoDiv.classList.add('show');
+    }, 100);
+    
+    // 8秒后自动移除
+    setTimeout(() => {
+        if (infoDiv.parentElement) {
+            infoDiv.classList.remove('show');
+            setTimeout(() => {
+                infoDiv.remove();
+            }, 300);
+        }
+    }, 8000);
+}
+
+function trackPaymentStart(planType, orderId) {
+    // 支付跟踪
+    console.log('支付开始 / Payment started:', { 
+        planType, 
+        orderId, 
+        timestamp: new Date().toISOString(),
+        product: PRODUCTS[planType]
+    });
+    
+    // Google Analytics 跟踪（如果启用）
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'begin_checkout', {
+            currency: 'USD',
+            value: parseFloat(PRODUCTS[planType].price),
+            items: [{
+                item_id: planType,
+                item_name: PRODUCTS[planType].name,
+                price: parseFloat(PRODUCTS[planType].price),
+                quantity: 1
+            }]
+        });
+    }
+    
+    // Facebook Pixel 跟踪（如果启用）
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'InitiateCheckout', {
+            value: parseFloat(PRODUCTS[planType].price),
+            currency: 'USD',
+            content_name: PRODUCTS[planType].name,
+            content_category: 'Software'
+        });
+    }
+}
+
 // 导出到全局作用域（用于调试）
 window.SQLiScannerLanding = {
     utils,
@@ -1659,7 +1965,11 @@ window.SQLiScannerLanding = {
     updatePurchaseInfo,
     updateAllTextContent,
     initContactFeatures,
-    initDemoVideo
+    initDemoVideo,
+    // 新增的支付功能
+    createCryptomusPayment,
+    CRYPTOMUS_CONFIG,
+    PRODUCTS
 };
 
 // 联系部分的特殊功能
