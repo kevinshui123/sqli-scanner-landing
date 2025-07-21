@@ -1660,13 +1660,10 @@ function initLanguage() {
 
 // ========================= CRYPTOMUS 支付集成 =========================
 
-// Cryptomus 配置
+// Cryptomus Widget 配置
 const CRYPTOMUS_CONFIG = {
     merchantId: 'a954cdac-8665-4609-bf80-366079639fe0',
-    paymentApiKey: 'fc9b4b5f34167a7c97d270d737010b0980030b83',
-    payoutApiKey: '5vAAe9mLmjVuXYlhzjggVvpiEhSV01sTQxAG2qHyiJkQ20uBHkehG73E2zf7JmutkBM4a9KBMY3ttmm9cXcXa4tEaXoqhk6AuZyS9zeU9PTp2DJuHa1Fid3RMlg4rBin',
-    baseUrl: 'https://api.cryptomus.com/v1',
-    paymentPageUrl: 'https://pay.cryptomus.com/pay'
+    widgetUrl: 'https://pay.cryptomus.com/widget/80e82038-124c-4cc4-b614-27cb3c5dbb55'
 };
 
 // 产品配置
@@ -1691,12 +1688,9 @@ const PRODUCTS = {
     }
 };
 
-// 创建 Cryptomus 支付
-async function createCryptomusPayment(planType) {
+// 创建 Cryptomus 支付（使用 Widget）
+function createCryptomusPayment(planType) {
     try {
-        // 显示加载状态
-        showPaymentLoadingState(planType);
-        
         const product = PRODUCTS[planType];
         if (!product) {
             throw new Error('无效的产品类型 / Invalid product type');
@@ -1705,153 +1699,116 @@ async function createCryptomusPayment(planType) {
         // 生成唯一订单ID
         const orderId = 'SQLI_' + planType.toUpperCase() + '_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         
-        // 准备支付数据
-        const paymentData = {
-            amount: product.price,
-            currency: product.currency,
-            order_id: orderId,
-            name: currentLang === 'zh' ? product.name : product.name_en,
-            description: product.description,
-            url_return: 'https://t.me/Lolipa124',
-            url_callback: window.location.origin + '/webhook/cryptomus', // 如果您有后端处理webhook
-            lifetime: 7200, // 2小时有效期
-            // 允许的加密货币
-            currencies: product.allowed_currencies,
-            // 额外数据
-            additional_data: JSON.stringify({
-                plan: planType,
-                timestamp: Date.now(),
-                source: 'landing_page'
-            })
-        };
-        
-        console.log('创建支付订单:', {
+        console.log('打开支付 Widget:', {
             plan: planType,
             orderId: orderId,
             amount: product.price,
             currency: product.currency
         });
         
-        // 调用后端API创建支付（推荐方式）
-        // 注意：为了安全，不应该在前端直接调用Cryptomus API
-        const response = await createPaymentViaBackend(paymentData);
+        // 显示支付 Widget 弹窗
+        showPaymentWidget(planType, orderId);
         
-        if (response.success && response.payment_url) {
-            // 跳转到Cryptomus支付页面
-            window.open(response.payment_url, '_blank');
-            
-            // 跟踪支付事件
-            trackPaymentStart(planType, orderId);
-            
-            // 显示支付提示
-            showPaymentRedirectInfo();
-        } else {
-            throw new Error(response.message || '创建支付失败 / Payment creation failed');
-        }
+        // 跟踪支付事件
+        trackPaymentStart(planType, orderId);
         
     } catch (error) {
         console.error('支付创建失败 / Payment creation failed:', error);
         showPaymentError(error.message);
-    } finally {
-        hidePaymentLoadingState(planType);
     }
 }
 
-// 通过后端创建支付（推荐方式）
-async function createPaymentViaBackend(paymentData) {
-    try {
-        // 如果您有后端API
-        const response = await fetch('/api/create-payment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(paymentData)
-        });
-        
-        if (!response.ok) {
-            throw new Error('后端API调用失败');
-        }
-        
-        return await response.json();
-        
-    } catch (error) {
-        console.log('后端API不可用，使用前端直接调用方式');
-        // 后备方案：前端直接创建支付链接
-        return createPaymentDirectly(paymentData);
+// 显示支付 Widget 弹窗
+function showPaymentWidget(planType, orderId) {
+    // 创建弹窗容器
+    const modal = document.createElement('div');
+    modal.className = 'payment-widget-modal';
+    modal.innerHTML = `
+        <div class="payment-widget-overlay" onclick="closePaymentWidget()"></div>
+        <div class="payment-widget-container">
+            <div class="payment-widget-header">
+                <h3>${currentLang === 'zh' ? '完成支付' : 'Complete Payment'}</h3>
+                <button class="widget-close-btn" onclick="closePaymentWidget()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="payment-widget-content">
+                <iframe
+                    src="${CRYPTOMUS_CONFIG.widgetUrl}"
+                    width="440"
+                    height="298"
+                    frameborder="0"
+                    allowtransparency="true">
+                </iframe>
+            </div>
+            <div class="payment-widget-footer">
+                <p class="widget-note">
+                    <i class="fas fa-shield-alt"></i>
+                    ${currentLang === 'zh' ? '支付由 Cryptomus 安全处理' : 'Payment securely processed by Cryptomus'}
+                </p>
+            </div>
+        </div>
+    `;
+    
+    // 添加到页面
+    document.body.appendChild(modal);
+    
+    // 添加显示动画
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+    
+    // 禁止背景滚动
+    document.body.style.overflow = 'hidden';
+    
+    // 监听支付完成（可选）
+    window.addEventListener('message', handlePaymentMessage);
+}
+
+// 关闭支付 Widget
+function closePaymentWidget() {
+    const modal = document.querySelector('.payment-widget-modal');
+    if (modal) {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.remove();
+            document.body.style.overflow = '';
+            window.removeEventListener('message', handlePaymentMessage);
+        }, 300);
     }
 }
 
-// 根据 Cryptomus API 文档创建支付
-async function createPaymentDirectly(paymentData) {
+// 处理支付消息（来自 Widget）
+function handlePaymentMessage(event) {
+    // 检查消息来源
+    if (event.origin !== 'https://pay.cryptomus.com') {
+        return;
+    }
+    
     try {
-        // 根据 Cryptomus API 文档构建请求数据
-        const apiData = {
-            amount: paymentData.amount,
-            currency: paymentData.currency,
-            order_id: paymentData.order_id,
-            name: paymentData.name,
-            url_return: paymentData.url_return,
-            url_callback: paymentData.url_callback || '',
-            lifetime: paymentData.lifetime || 7200,
-            additional_data: paymentData.additional_data || ''
-        };
+        const data = JSON.parse(event.data);
         
-        // 生成签名 (根据 Cryptomus 文档要求)
-        const dataString = JSON.stringify(apiData, Object.keys(apiData).sort());
-        const base64Data = btoa(unescape(encodeURIComponent(dataString)));
-        const sign = CryptoJS.MD5(base64Data + CRYPTOMUS_CONFIG.paymentApiKey).toString();
-        
-        console.log('创建 Cryptomus 支付请求:', apiData);
-        
-        // 调用 Cryptomus API
-        const response = await fetch(`${CRYPTOMUS_CONFIG.baseUrl}/payment`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'merchant': CRYPTOMUS_CONFIG.merchantId,
-                'sign': sign
-            },
-            body: JSON.stringify(apiData)
-        });
-        
-        const result = await response.json();
-        
-        console.log('Cryptomus API 响应:', result);
-        
-        if (result.state === 'success' || result.state === 0) {
-            return {
-                success: true,
-                payment_url: result.result.url,
-                order_id: paymentData.order_id,
-                uuid: result.result.uuid
-            };
-        } else {
-            throw new Error(result.message || 'API 调用失败');
+        if (data.type === 'payment_success') {
+            console.log('支付成功:', data);
+            closePaymentWidget();
+            showPaymentSuccessNotification();
+            
+            // 延迟跳转到 Telegram
+            setTimeout(() => {
+                window.open('https://t.me/Lolipa124', '_blank');
+            }, 2000);
+            
+        } else if (data.type === 'payment_failed') {
+            console.log('支付失败:', data);
+            showPaymentError(data.message || '支付失败');
+            
+        } else if (data.type === 'widget_closed') {
+            console.log('用户关闭了支付窗口');
+            closePaymentWidget();
         }
         
     } catch (error) {
-        console.error('Cryptomus API 调用失败:', error);
-        
-        // 降级方案：使用支付链接
-        console.log('降级到支付链接方案');
-        const params = new URLSearchParams({
-            merchant_id: CRYPTOMUS_CONFIG.merchantId,
-            amount: paymentData.amount,
-            currency: paymentData.currency,
-            order_id: paymentData.order_id,
-            name: paymentData.name,
-            url_return: paymentData.url_return
-        });
-        
-        const fallbackUrl = `${CRYPTOMUS_CONFIG.paymentPageUrl}?${params.toString()}`;
-        
-        return {
-            success: true,
-            payment_url: fallbackUrl,
-            order_id: paymentData.order_id,
-            fallback: true
-        };
+        console.log('支付消息解析失败:', error);
     }
 }
 
@@ -1913,7 +1870,7 @@ function showPaymentError(message) {
     }, 5000);
 }
 
-function showPaymentRedirectInfo() {
+function showPaymentSuccessNotification() {
     // 创建成功提示
     const infoDiv = document.createElement('div');
     infoDiv.className = 'payment-notification success';
@@ -1921,8 +1878,8 @@ function showPaymentRedirectInfo() {
         <div class="notification-content">
             <i class="fas fa-check-circle"></i>
             <div class="notification-text">
-                <strong>支付页面已打开</strong>
-                <p>请在新窗口中完成支付，支持BTC、ETH、USDT等多种加密货币</p>
+                <strong>${currentLang === 'zh' ? '支付成功！' : 'Payment Successful!'}</strong>
+                <p>${currentLang === 'zh' ? '正在跳转到客服，请稍候...' : 'Redirecting to customer service, please wait...'}</p>
             </div>
             <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
                 <i class="fas fa-times"></i>
@@ -1937,7 +1894,7 @@ function showPaymentRedirectInfo() {
         infoDiv.classList.add('show');
     }, 100);
     
-    // 8秒后自动移除
+    // 5秒后自动移除
     setTimeout(() => {
         if (infoDiv.parentElement) {
             infoDiv.classList.remove('show');
@@ -1945,7 +1902,7 @@ function showPaymentRedirectInfo() {
                 infoDiv.remove();
             }, 300);
         }
-    }, 8000);
+    }, 5000);
 }
 
 function trackPaymentStart(planType, orderId) {
@@ -2002,6 +1959,8 @@ window.SQLiScannerLanding = {
     initDemoVideo,
     // 新增的支付功能
     createCryptomusPayment,
+    showPaymentWidget,
+    closePaymentWidget,
     CRYPTOMUS_CONFIG,
     PRODUCTS
 };
@@ -2272,4 +2231,4 @@ function initDemoVideo() {
             }
         });
     }
-} 
+}
