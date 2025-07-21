@@ -1663,7 +1663,8 @@ function initLanguage() {
 // Cryptomus 配置
 const CRYPTOMUS_CONFIG = {
     merchantId: 'a954cdac-8665-4609-bf80-366079639fe0',
-    paymentApiKey: 'v99PyI8MbGrUSUCqMLhVhseKiUeOoM08rTzqt6a5aAJ3OCTlhBbQ5P3CQtznfDYa111C0qgt6scG7E3A8LJKnMA1oFYwqO0IAbw385Irbl5L6r5bR69XpEHhe6Cw4qtc',
+    paymentApiKey: 'fc9b4b5f34167a7c97d270d737010b0980030b83',
+    payoutApiKey: '5vAAe9mLmjVuXYlhzjggVvpiEhSV01sTQxAG2qHyiJkQ20uBHkehG73E2zf7JmutkBM4a9KBMY3ttmm9cXcXa4tEaXoqhk6AuZyS9zeU9PTp2DJuHa1Fid3RMlg4rBin',
     baseUrl: 'https://api.cryptomus.com/v1',
     paymentPageUrl: 'https://pay.cryptomus.com/pay'
 };
@@ -1781,42 +1782,75 @@ async function createPaymentViaBackend(paymentData) {
     }
 }
 
-// 直接创建支付链接（临时方案）
-function createPaymentDirectly(paymentData) {
+// 根据 Cryptomus API 文档创建支付
+async function createPaymentDirectly(paymentData) {
     try {
-        // 构建支付URL参数
+        // 根据 Cryptomus API 文档构建请求数据
+        const apiData = {
+            amount: paymentData.amount,
+            currency: paymentData.currency,
+            order_id: paymentData.order_id,
+            name: paymentData.name,
+            url_return: paymentData.url_return,
+            url_callback: paymentData.url_callback || '',
+            lifetime: paymentData.lifetime || 7200,
+            additional_data: paymentData.additional_data || ''
+        };
+        
+        // 生成签名 (根据 Cryptomus 文档要求)
+        const dataString = JSON.stringify(apiData, Object.keys(apiData).sort());
+        const base64Data = btoa(unescape(encodeURIComponent(dataString)));
+        const sign = CryptoJS.MD5(base64Data + CRYPTOMUS_CONFIG.paymentApiKey).toString();
+        
+        console.log('创建 Cryptomus 支付请求:', apiData);
+        
+        // 调用 Cryptomus API
+        const response = await fetch(`${CRYPTOMUS_CONFIG.baseUrl}/payment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'merchant': CRYPTOMUS_CONFIG.merchantId,
+                'sign': sign
+            },
+            body: JSON.stringify(apiData)
+        });
+        
+        const result = await response.json();
+        
+        console.log('Cryptomus API 响应:', result);
+        
+        if (result.state === 'success' || result.state === 0) {
+            return {
+                success: true,
+                payment_url: result.result.url,
+                order_id: paymentData.order_id,
+                uuid: result.result.uuid
+            };
+        } else {
+            throw new Error(result.message || 'API 调用失败');
+        }
+        
+    } catch (error) {
+        console.error('Cryptomus API 调用失败:', error);
+        
+        // 降级方案：使用支付链接
+        console.log('降级到支付链接方案');
         const params = new URLSearchParams({
             merchant_id: CRYPTOMUS_CONFIG.merchantId,
             amount: paymentData.amount,
             currency: paymentData.currency,
             order_id: paymentData.order_id,
             name: paymentData.name,
-            description: paymentData.description,
-            url_return: paymentData.url_return,
-            lifetime: paymentData.lifetime.toString()
+            url_return: paymentData.url_return
         });
         
-        // 如果需要指定允许的货币
-        if (paymentData.currencies && paymentData.currencies.length > 0) {
-            params.append('currencies', paymentData.currencies.join(','));
-        }
-        
-        // 构建完整的支付URL
-        const paymentUrl = `${CRYPTOMUS_CONFIG.paymentPageUrl}?${params.toString()}`;
-        
-        console.log('生成支付链接:', paymentUrl);
+        const fallbackUrl = `${CRYPTOMUS_CONFIG.paymentPageUrl}?${params.toString()}`;
         
         return {
             success: true,
-            payment_url: paymentUrl,
-            order_id: paymentData.order_id
-        };
-        
-    } catch (error) {
-        console.error('创建支付链接失败:', error);
-        return {
-            success: false,
-            message: error.message
+            payment_url: fallbackUrl,
+            order_id: paymentData.order_id,
+            fallback: true
         };
     }
 }
