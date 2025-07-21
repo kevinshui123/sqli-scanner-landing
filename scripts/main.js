@@ -795,7 +795,9 @@ const translations = {
         
         // 支付相关
         buyNowBtn: '立即购买',
+        consultNowBtn: '立即咨询',
         cryptoSupport: '支持BTC、ETH、USDT等主流币种',
+        enterpriseCustom: '定制化企业解决方案',
         paymentCreating: '正在创建支付...',
         paymentSuccess: '支付页面已打开',
         paymentSuccessDesc: '请在新窗口中完成支付，支持BTC、ETH、USDT等多种加密货币',
@@ -1003,7 +1005,9 @@ const translations = {
         
         // 支付相关
         buyNowBtn: 'Buy Now',
+        consultNowBtn: 'Consult Now',
         cryptoSupport: 'Supports BTC, ETH, USDT and other major cryptocurrencies',
+        enterpriseCustom: 'Customized enterprise solutions',
         paymentCreating: 'Creating payment...',
         paymentSuccess: 'Payment page opened',
         paymentSuccessDesc: 'Please complete payment in the new window, supports BTC, ETH, USDT and other cryptocurrencies',
@@ -1273,6 +1277,18 @@ function updateAllTextContent(trans) {
         '[*] Potential injection point detected: id parameter': trans.detectedInjectionPoint,
         '[!] SQL injection vulnerability found': trans.foundSqlInjection,
         '[+] Scan completed, generating report': trans.scanComplete,
+        
+        // 按钮文本
+        '立即购买': trans.buyNowBtn,
+        '立即咨询': trans.consultNowBtn,
+        'Buy Now': trans.buyNowBtn,
+        'Consult Now': trans.consultNowBtn,
+        
+        // 提示文本
+        '支持BTC、ETH、USDT等主流币种': trans.cryptoSupport,
+        '定制化企业解决方案': trans.enterpriseCustom,
+        'Supports BTC, ETH, USDT and other major cryptocurrencies': trans.cryptoSupport,
+        'Customized enterprise solutions': trans.enterpriseCustom,
         
         // 联系部分
         '联系我们': trans.contactTitle,
