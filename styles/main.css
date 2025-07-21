@@ -2081,3 +2081,209 @@ body {
     transform: translateY(0);
     box-shadow: 0 2px 15px rgba(99, 102, 241, 0.4);
 }
+
+/* ========================= CRYPTOMUS WIDGET 样式 ========================= */
+
+/* Widget 弹窗容器 */
+.payment-widget-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--duration-normal) ease;
+}
+
+.payment-widget-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Widget 背景遮罩 */
+.payment-widget-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+/* Widget 主容器 */
+.payment-widget-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-2xl);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow-xl);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow: hidden;
+    animation: widgetSlideIn 0.3s ease;
+}
+
+/* Widget 头部 */
+.payment-widget-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.payment-widget-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.widget-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    transition: all var(--duration-fast) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.widget-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+/* Widget 内容区域 */
+.payment-widget-content {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 298px;
+}
+
+.payment-widget-content iframe {
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+}
+
+/* Widget 底部 */
+.payment-widget-footer {
+    padding: 1rem 2rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.widget-note {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-align: center;
+    justify-content: center;
+}
+
+.widget-note i {
+    color: var(--success-color);
+}
+
+/* Widget 动画 */
+@keyframes widgetSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Widget 响应式设计 */
+@media (max-width: 768px) {
+    .payment-widget-container {
+        width: 95%;
+        max-width: none;
+    }
+    
+    .payment-widget-header {
+        padding: 1rem 1.5rem;
+    }
+    
+    .payment-widget-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .payment-widget-content {
+        padding: 1rem;
+    }
+    
+    .payment-widget-content iframe {
+        width: 100% !important;
+        max-width: 400px;
+        height: 280px !important;
+    }
+    
+    .payment-widget-footer {
+        padding: 1rem 1.5rem;
+    }
+    
+    .widget-note {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-widget-container {
+        width: 98%;
+        top: 45%;
+    }
+    
+    .payment-widget-content iframe {
+        width: 100% !important;
+        max-width: 320px;
+        height: 260px !important;
+    }
+}
+
+/* Widget 加载状态 */
+.payment-widget-content.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 298px;
+}
+
+.payment-widget-content.loading::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(99, 102, 241, 0.3);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.payment-widget-content.loading::after {
+    content: '加载支付组件中...';
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
